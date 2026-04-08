@@ -12,7 +12,6 @@ import (
 // @contact.name Artem Rylskii
 // @contact.url https://t.me/Rainz0r
 // @contact.email n52rus@gmail.com
-// @host localhost:8080
 // @BasePath /
 func main() {
 	server.Run()

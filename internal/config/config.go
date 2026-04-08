@@ -54,8 +54,6 @@ type LogConfig struct {
 
 type GreenAPIConfig struct {
 	BaseURL string `toml:"base_url" env:"GREEN_HTML_GREEN_API_BASE_URL"` // Базовый URL GREEN-API, например https://1105.api.green-api.com
-	//IDInstance     string        `toml:"id_instance" env:"GREEN_HTML_GREEN_API_ID_INSTANCE"`         // Идентификатор инстанса GREEN-API
-	//APIToken       string        `toml:"api_token" env:"GREEN_HTML_GREEN_API_API_TOKEN"`             // Токен доступа к инстансу GREEN-API
 	RequestTimeout time.Duration `toml:"request_timeout" env:"GREEN_HTML_GREEN_API_REQUEST_TIMEOUT"` // Таймаут исходящих HTTP-запросов в GREEN-API
 }
 

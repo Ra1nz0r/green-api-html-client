@@ -1,236 +1,210 @@
 <!DOCTYPE html>
 <html lang="ru" data-theme="light">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GREEN-API HTML Client</title>
-  <link rel="stylesheet" href="/static/css/style.css" />
-</head>
-<body>
-  <!-- Верхняя панель страницы -->
-  <header class="topbar">
-    <div class="topbar__inner">
-      <div>
-        <h1 class="page-title">GREEN-API HTML Client</h1>
-        <p class="page-subtitle">
-          Тестовая страница для методов getSettings, getStateInstance, sendMessage и sendFileByUrl
-        </p>
-      </div>
-
-      <div class="topbar__actions">
-        <button type="button" id="themeToggle" class="btn btn-ghost btn-icon" title="Сменить тему">
-          🌙
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- Основная область -->
-  <main class="page">
-    <div class="page__grid">
-      <!-- Левая колонка с формами -->
-      <section class="panel panel--form">
-        <div class="panel__header">
-          <h2 class="panel__title">Параметры подключения</h2>
-          <p class="panel__hint">
-            Эти поля нужны для всех вызовов GREEN-API.
-          </p>
-        </div>
-
-        <div class="card">
-          <label class="field">
-            <span class="field__label">idInstance</span>
-            <input
-              id="idInstance"
-              class="input"
-              type="text"
-              placeholder="Например: 1105..."
-              autocomplete="off"
-            />
-          </label>
-
-          <label class="field">
-            <span class="field__label">ApiTokenInstance</span>
-            <input
-              id="apiTokenInstance"
-              class="input"
-              type="password"
-              placeholder="Введите API token"
-              autocomplete="off"
-            />
-          </label>
-
-          <label class="checkbox">
-            <input id="showToken" type="checkbox" />
-            <span>Показать токен</span>
-          </label>
-        </div>
-
-        <!-- Блок методов GET -->
-        <div class="panel__header panel__header--spaced">
-            <h2 class="panel__title">Получение данных</h2>
-            <p class="panel__hint">
-                Быстрые вызовы без тела запроса.
-            </p>
-        </div>
-
-        <div class="card card--actions">
-            <button type="button" id="getSettingsBtn" class="btn btn-primary">
-                Get settings
-            </button>
-
-            <button type="button" id="getStateInstanceBtn" class="btn btn-primary">
-                Get instance state
-            </button>
-        </div>
-
-        <!-- Блок отправки сообщения -->
-        <section class="accordion">
-            <button type="button" class="accordion__toggle" data-target="messageSection">
-                <span>Отправка сообщения <span class="muted-inline">(sendMessage)</span></span>
-                <span class="accordion__icon">▾</span>
-            </button>
-
-            <div class="accordion__content" id="messageSection">
-                <p class="panel__hint">
-                Укажите телефон или chatId и текст сообщения.
-                </p>
-
-                <div class="card">                
-                <label class="field">
-                <span class="field__label">Телефон или chatId</span>
-                <input
-                    id="messageChatId"
-                    class="input"
-                    type="text"
-                    placeholder="79991234567 или готовый chatId"
-                    autocomplete="off"
-                />
-                <small class="field__hint">
-                    Если ввести только номер, система автоматически добавит суффикс @c.us для личного чата.
-                </small>
-                </label>
-
-                <label class="field">
-                    <span class="field__label">message</span>
-                    <textarea
-                    id="messageText"
-                    class="textarea"
-                    placeholder="Введите текст сообщения"
-                    ></textarea>
-                </label>
-
-                <button type="button" id="sendMessageBtn" class="btn btn-primary btn-full">
-                    Send message
-                </button>
-                </div>
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>GREEN-API HTML Client</title>
+      <link rel="stylesheet" href="/static/css/style.css" />
+   </head>
+   <body>
+      <!-- Верхняя панель страницы -->
+      <header class="topbar">
+         <div class="topbar__inner">
+            <div>
+               <h1 class="page-title">GREEN-API HTML Client</h1>
+               <p class="page-subtitle">
+                  Тестовая страница для методов getSettings, getStateInstance, sendMessage и sendFileByUrl
+               </p>
             </div>
-        </section>
-
-        <!-- Блок отправки файла -->
-        <section class="accordion">
-            <button type="button" class="accordion__toggle" data-target="fileSection">
-                <span>Отправка файла по URL <span class="muted-inline">(sendFileByUrl)</span></span>
-                <span class="accordion__icon">▾</span>
-            </button>
-
-            <div class="accordion__content" id="fileSection">
-                <p class="panel__hint">
-                Для sendFileByUrl нужен публичный URL файла.
-                </p>
-
-                <div class="card">
-                <label class="field">
-                    <span class="field__label">Телефон или chatId</span>
-                    <input
-                        id="fileChatId"
-                        class="input"
-                        type="text"
-                        placeholder="79991234567 или готовый chatId"
-                        autocomplete="off"
-                    />
-                    <small class="field__hint">
+            <div class="topbar__actions">
+               <button type="button" id="themeToggle" class="btn btn-ghost btn-icon" title="Сменить тему">
+               🌙
+               </button>
+            </div>
+         </div>
+      </header>
+      <!-- Основная область -->
+      <main class="page">
+         <div class="page__grid">
+            <!-- Левая колонка с формами -->
+            <section class="panel panel--form">
+               <div class="panel__header">
+                  <h2 class="panel__title">Параметры подключения</h2>
+                  <p class="panel__hint">
+                     Эти поля нужны для всех вызовов GREEN-API.
+                  </p>
+               </div>
+               <div class="card">
+                  <label class="field">
+                  <span class="field__label">idInstance</span>
+                  <input
+                     id="idInstance"
+                     class="input"
+                     type="text"
+                     placeholder="Например: 1105..."
+                     autocomplete="off"
+                     />
+                  </label>
+                  <label class="field">
+                  <span class="field__label">ApiTokenInstance</span>
+                  <input
+                     id="apiTokenInstance"
+                     class="input"
+                     type="password"
+                     placeholder="Введите API token"
+                     autocomplete="off"
+                     />
+                  </label>
+                  <label class="checkbox">
+                  <input id="showToken" type="checkbox" />
+                  <span>Показать токен</span>
+                  </label>
+               </div>
+               <!-- Блок методов GET -->
+               <div class="panel__header panel__header--spaced">
+                  <h2 class="panel__title">Получение данных</h2>
+                  <p class="panel__hint">
+                     Быстрые вызовы без тела запроса.
+                  </p>
+               </div>
+               <div class="card card--actions">
+                  <button type="button" id="getSettingsBtn" class="btn btn-primary">
+                  Get settings
+                  </button>
+                  <button type="button" id="getStateInstanceBtn" class="btn btn-primary">
+                  Get instance state
+                  </button>
+               </div>
+               <!-- Блок отправки сообщения -->
+               <section class="accordion">
+                  <button type="button" class="accordion__toggle" data-target="messageSection">
+                  <span>Отправка сообщения <span class="muted-inline">(sendMessage)</span></span>
+                  <span class="accordion__icon">▾</span>
+                  </button>
+                  <div class="accordion__content" id="messageSection">
+                     <p class="panel__hint">
+                        Укажите телефон или chatId и текст сообщения.
+                     </p>
+                     <div class="card">                
+                        <label class="field">
+                        <span class="field__label">Телефон или chatId</span>
+                        <input
+                           id="messageChatId"
+                           class="input"
+                           type="text"
+                           placeholder="79991234567 или готовый chatId"
+                           autocomplete="off"
+                           />
+                        <small class="field__hint">
                         Если ввести только номер, система автоматически добавит суффикс @c.us для личного чата.
-                    </small>
-                </label>
-
-                <label class="field">
-                    <span class="field__label">urlFile</span>
-                    <input
-                    id="urlFile"
-                    class="input"
-                    type="text"
-                    placeholder="https://example.com/file.pdf"
-                    autocomplete="off"
-                    />
-                </label>
-
-                <label class="field">
-                    <span class="field__label">fileName</span>
-                    <input
-                    id="fileName"
-                    class="input"
-                    type="text"
-                    placeholder="Например: file.pdf"
-                    autocomplete="off"
-                    />
-                </label>
-
-                <label class="field">
-                    <span class="field__label">caption</span>
-                    <input
-                    id="caption"
-                    class="input"
-                    type="text"
-                    placeholder="Необязательная подпись"
-                    autocomplete="off"
-                    />
-                </label>
-
-                <button type="button" id="sendFileBtn" class="btn btn-primary btn-full">
-                    Send file by URL
-                </button>
-                </div>
-            </div>
-        </section>
-
-      </section>
-
-      <!-- Правая колонка с ответом -->
-      <section class="panel panel--response">
-        <div class="panel__header panel__header--response">
-          <div>
-            <h2 class="panel__title">Ответ API</h2>
-            <p class="panel__hint">
-              Поле только для чтения. Редактировать нельзя, копировать можно.
-            </p>
-          </div>
-
-          <div class="response-actions">
-            <button type="button" id="clearResponseBtn" class="btn btn-ghost">
-              Очистить
-            </button>
-            <button type="button" id="copyResponseBtn" class="btn btn-ghost">
-              Копировать
-            </button>
-          </div>
-        </div>
-
-        <div class="response-status" id="responseStatus">
-          Готово к работе
-        </div>
-
-        <textarea
-          id="response"
-          class="response-box"
-          readonly
-          spellcheck="false"
-          placeholder="Здесь будет отображаться ответ GREEN-API"
-        ></textarea>
-      </section>
-    </div>
-  </main>
-
-  <script src="/static/js/app.js"></script>
-</body>
+                        </small>
+                        </label>
+                        <label class="field">
+                        <span class="field__label">message</span>
+                        <textarea
+                           id="messageText"
+                           class="textarea"
+                           placeholder="Введите текст сообщения"
+                           ></textarea>
+                        </label>
+                        <button type="button" id="sendMessageBtn" class="btn btn-primary btn-full">
+                        Send message
+                        </button>
+                     </div>
+                  </div>
+               </section>
+               <!-- Блок отправки файла -->
+               <section class="accordion">
+                  <button type="button" class="accordion__toggle" data-target="fileSection">
+                  <span>Отправка файла по URL <span class="muted-inline">(sendFileByUrl)</span></span>
+                  <span class="accordion__icon">▾</span>
+                  </button>
+                  <div class="accordion__content" id="fileSection">
+                     <p class="panel__hint">
+                        Для sendFileByUrl нужен публичный URL файла.
+                     </p>
+                     <div class="card">
+                        <label class="field">
+                        <span class="field__label">Телефон или chatId</span>
+                        <input
+                           id="fileChatId"
+                           class="input"
+                           type="text"
+                           placeholder="79991234567 или готовый chatId"
+                           autocomplete="off"
+                           />
+                        <small class="field__hint">
+                        Если ввести только номер, система автоматически добавит суффикс @c.us для личного чата.
+                        </small>
+                        </label>
+                        <label class="field">
+                        <span class="field__label">urlFile</span>
+                        <input
+                           id="urlFile"
+                           class="input"
+                           type="text"
+                           placeholder="https://example.com/file.pdf"
+                           autocomplete="off"
+                           />
+                        </label>
+                        <label class="field">
+                        <span class="field__label">fileName</span>
+                        <input
+                           id="fileName"
+                           class="input"
+                           type="text"
+                           placeholder="Например: file.pdf"
+                           autocomplete="off"
+                           />
+                        </label>
+                        <label class="field">
+                        <span class="field__label">caption</span>
+                        <input
+                           id="caption"
+                           class="input"
+                           type="text"
+                           placeholder="Необязательная подпись"
+                           autocomplete="off"
+                           />
+                        </label>
+                        <button type="button" id="sendFileBtn" class="btn btn-primary btn-full">
+                        Send file by URL
+                        </button>
+                     </div>
+                  </div>
+               </section>
+            </section>
+            <!-- Правая колонка с ответом -->
+            <section class="panel panel--response">
+               <div class="panel__header panel__header--response">
+                  <div>
+                     <h2 class="panel__title">Ответ API</h2>
+                     <p class="panel__hint">
+                        Поле только для чтения. Редактировать нельзя, копировать можно.
+                     </p>
+                  </div>
+                  <div class="response-actions">
+                     <button type="button" id="clearResponseBtn" class="btn btn-ghost">
+                     Очистить
+                     </button>
+                     <button type="button" id="copyResponseBtn" class="btn btn-ghost">
+                     Копировать
+                     </button>
+                  </div>
+               </div>
+               <div class="response-status" id="responseStatus">
+                  Готово к работе
+               </div>
+               <textarea
+                  id="response"
+                  class="response-box"
+                  readonly
+                  spellcheck="false"
+                  placeholder="Здесь будет отображаться ответ GREEN-API"
+                  ></textarea>
+            </section>
+         </div>
+      </main>
+      <script src="/static/js/app.js"></script>
+   </body>
 </html>

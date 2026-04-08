@@ -148,7 +148,7 @@ document.getElementById("sendMessageBtn").addEventListener("click", function () 
     idInstance: connection.idInstance,
     apiTokenInstance: connection.apiTokenInstance,
     chatId: document.getElementById("messageChatId").value.trim(),
-    message: document.getElementById("messageText").value
+    message: document.getElementById("messageText").value.trim()
   };
 
   requestJson("/api/message", {
