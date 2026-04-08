@@ -17,6 +17,12 @@
 
 ---
 
+<p align="center">
+  <img src="./assets/overview.gif" alt="Demo overview" width="900">
+</p>
+
+---
+
 > **Оглавление**
 >
 > - [Что умеет приложение](#что-умеет-приложение)
@@ -51,6 +57,9 @@
 
 - **Главная HTML-страница**  
   `web/index.html`
+
+- **Материалы для README**
+  `assets/`
 
 - **Стили и JS**  
   `web/static/css/style.css`  
@@ -104,6 +113,8 @@
 │       │   └── style.css
 │       └── js/
 │           └── app.js
+├── assets/
+│   └── overview.gif
 ├── Dockerfile
 ├── Taskfile.yml
 └── README.md
@@ -297,7 +308,7 @@ http://127.0.0.1:8080/swagger/index.html
 Пример:
 
 ```text
-79991234567 меняется на 79991234567@c.us
+79991234567 преобразуется в 79991234567@c.us
 ```
 
 Если передан уже готовый `chatId`, он отправляется в GREEN-API без изменений.
