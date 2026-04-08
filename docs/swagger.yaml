@@ -1,0 +1,245 @@
+basePath: /
+definitions:
+  models.ErrorResponse:
+    properties:
+      error:
+        example: idInstance is required
+        type: string
+    type: object
+  models.SendFileByURLRequest:
+    properties:
+      apiTokenInstance:
+        description: Токен доступа к инстансу GREEN-API
+        type: string
+      caption:
+        description: Необязательная подпись к файлу
+        type: string
+      chatId:
+        description: Телефон или chatId, например 79991234567 или 79991234567@c.us
+        type: string
+      fileName:
+        description: Имя файла с расширением, например file.pdf
+        type: string
+      idInstance:
+        description: Идентификатор инстанса GREEN-API
+        type: string
+      quotedMessageId:
+        description: ID сообщения, на которое нужно ответить
+        type: string
+      urlFile:
+        description: Публичная ссылка на файл
+        type: string
+    required:
+    - apiTokenInstance
+    - chatId
+    - fileName
+    - idInstance
+    - urlFile
+    type: object
+  models.SendMessageRequest:
+    properties:
+      apiTokenInstance:
+        description: Токен доступа к инстансу GREEN-API
+        type: string
+      chatId:
+        description: Телефон или chatId, например 79991234567 или 79991234567@c.us
+        type: string
+      idInstance:
+        description: Идентификатор инстанса GREEN-API
+        type: string
+      message:
+        description: Текст сообщения
+        maxLength: 20000
+        type: string
+      quotedMessageId:
+        description: ID сообщения, на которое нужно ответить
+        type: string
+    required:
+    - apiTokenInstance
+    - chatId
+    - idInstance
+    - message
+    type: object
+  models.ValidationErrorResponse:
+    properties:
+      error:
+        example: validation failed
+        type: string
+      fields:
+        items:
+          $ref: '#/definitions/models.ValidationFieldError'
+        type: array
+    type: object
+  models.ValidationFieldError:
+    properties:
+      error:
+        example: chatId is required
+        type: string
+      field:
+        example: chatId
+        type: string
+      param:
+        example: ""
+        type: string
+      tag:
+        example: required
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: n52rus@gmail.com
+    name: Artem Rylskii
+    url: https://t.me/Rainz0r
+  description: HTML client and backend proxy for GREEN-API methods getSettings, getStateInstance,
+    sendMessage and sendFileByUrl.
+  title: GREEN-API HTML Client
+  version: "1.0"
+paths:
+  /api/file:
+    post:
+      consumes:
+      - application/json
+      description: Sends a file by public URL via GREEN-API. If chatId is sent as
+        a plain phone number, the backend automatically appends @c.us.
+      parameters:
+      - description: File payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.SendFileByURLRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: GREEN-API response
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Validation failed or invalid request body
+          schema:
+            $ref: '#/definitions/models.ValidationErrorResponse'
+        "500":
+          description: Failed to build request or marshal payload
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "502":
+          description: Failed to request GREEN-API
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Send file by URL
+      tags:
+      - green-api
+  /api/message:
+    post:
+      consumes:
+      - application/json
+      description: Sends a text message via GREEN-API. If chatId is sent as a plain
+        phone number, the backend automatically appends @c.us.
+      parameters:
+      - description: Message payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.SendMessageRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: GREEN-API response
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Validation failed or invalid request body
+          schema:
+            $ref: '#/definitions/models.ValidationErrorResponse'
+        "500":
+          description: Failed to build request or marshal payload
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "502":
+          description: Failed to request GREEN-API
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Send text message
+      tags:
+      - green-api
+  /api/settings:
+    get:
+      description: Returns GREEN-API instance settings.
+      parameters:
+      - description: GREEN-API instance ID
+        in: query
+        name: idInstance
+        required: true
+        type: string
+      - description: GREEN-API instance API token
+        in: query
+        name: apiTokenInstance
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: GREEN-API response
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Missing required query parameters
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Failed to build request or read response
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "502":
+          description: Failed to request GREEN-API
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get instance settings
+      tags:
+      - green-api
+  /api/state:
+    get:
+      description: Returns current GREEN-API instance state.
+      parameters:
+      - description: GREEN-API instance ID
+        in: query
+        name: idInstance
+        required: true
+        type: string
+      - description: GREEN-API instance API token
+        in: query
+        name: apiTokenInstance
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: GREEN-API response
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Missing required query parameters
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Failed to build request or read response
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "502":
+          description: Failed to request GREEN-API
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get instance state
+      tags:
+      - green-api
+swagger: "2.0"

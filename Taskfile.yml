@@ -1,8 +1,66 @@
 ---
 version: "3"
 
+vars:
+  APP_NAME: green-api-html-client
+  IMAGE_NAME: green-api-html-client
+  DOCKER_PORT: 8080
+  CONFIG_FILE: green-api-client_config.cfg
+  ENV_FILE: green-api-client_config.env
+
 tasks:
-  run: # название задачи для запуска
-    desc: "Runs 'main.go' file."
+  run:
+    desc: "Запускает приложение локально."
     cmds:
       - go run ./cmd/app
+
+  build:
+    desc: "Собирает бинарник приложения в ./bin."
+    cmds:
+      - mkdir -p bin
+      - go build -o ./bin/{{.APP_NAME}} ./cmd/app
+
+  fmt:
+    desc: "Форматирует Go-код."
+    cmds:
+      - gofmt -w ./cmd ./internal
+
+  swagger:
+    desc: "Генерирует Swagger-документацию в ./docs."
+    cmds:
+      - swag init -g main.go -d ./cmd/app,./internal/handlers,./internal/models,./internal/validation --parseInternal -o ./docs
+
+  docker-build:
+    desc: "Собирает Docker-образ приложения."
+    cmds:
+      - docker build -t {{.IMAGE_NAME}} .
+
+  docker-run-env:
+    desc: "Запускает контейнер с настройками из env-файла."
+    cmds:
+      - docker run --rm -p {{.DOCKER_PORT}}:{{.DOCKER_PORT}} --env-file ./{{.ENV_FILE}} {{.IMAGE_NAME}}
+
+  docker-run-cfg:
+    desc: "Запускает контейнер с конфигом, примонтированным внутрь контейнера."
+    cmds:
+      - docker run --rm -p {{.DOCKER_PORT}}:{{.DOCKER_PORT}} -v "$(pwd)/{{.CONFIG_FILE}}:/home/appuser/{{.CONFIG_FILE}}" {{.IMAGE_NAME}}
+
+  docker-stop:
+    desc: "Останавливает все контейнеры с образом приложения."
+    cmds:
+      - docker ps -q --filter ancestor={{.IMAGE_NAME}} | xargs -r docker stop
+
+  clean:
+    desc: "Удаляет локальный бинарник."
+    cmds:
+      - rm -rf ./bin
+
+  clean-swagger:
+    desc: "Удаляет сгенерированную Swagger-документацию."
+    cmds:
+      - rm -rf ./docs
+
+  clean-image:
+    desc: "Удаляет Docker-образ приложения."
+    cmds:
+      - docker rmi {{.IMAGE_NAME}} || true

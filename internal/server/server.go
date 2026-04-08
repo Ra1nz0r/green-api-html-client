@@ -12,6 +12,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	swaggo "github.com/gofiber/contrib/v3/swaggo"
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/static"
 	"github.com/rs/zerolog/log"
@@ -144,6 +145,8 @@ func newFiberApp(cfg *config.Config) *fiber.App {
 func registerRoutes(app *fiber.App, h *handlers.Handler) {
 	app.Get("/", handlers.IndexPage)
 	app.Use("/static", static.New("./web/static"))
+
+	app.Get("/swagger/*", swaggo.HandlerDefault)
 
 	app.Get("/api/settings", h.GetSettings)
 	app.Get("/api/state", h.GetStateInstance)

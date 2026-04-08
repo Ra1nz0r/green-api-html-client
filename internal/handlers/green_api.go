@@ -32,17 +32,53 @@ func New(httpClient *http.Client, baseURL string) *Handler {
 }
 
 // GetSettings получает настройки инстанса из GREEN-API.
+//
+// @Summary Get instance settings
+// @Description Returns GREEN-API instance settings.
+// @Tags green-api
+// @Produce json
+// @Param idInstance query string true "GREEN-API instance ID"
+// @Param apiTokenInstance query string true "GREEN-API instance API token"
+// @Success 200 {object} map[string]interface{} "GREEN-API response"
+// @Failure 400 {object} models.ErrorResponse "Missing required query parameters"
+// @Failure 500 {object} models.ErrorResponse "Failed to build request or read response"
+// @Failure 502 {object} models.ErrorResponse "Failed to request GREEN-API"
+// @Router /api/settings [get]
 func (h *Handler) GetSettings(c fiber.Ctx) error {
 	return h.doGreenAPIGet(c, "getSettings")
 }
 
 // GetStateInstance получает текущий статус инстанса из GREEN-API.
+//
+// @Summary Get instance state
+// @Description Returns current GREEN-API instance state.
+// @Tags green-api
+// @Produce json
+// @Param idInstance query string true "GREEN-API instance ID"
+// @Param apiTokenInstance query string true "GREEN-API instance API token"
+// @Success 200 {object} map[string]interface{} "GREEN-API response"
+// @Failure 400 {object} models.ErrorResponse "Missing required query parameters"
+// @Failure 500 {object} models.ErrorResponse "Failed to build request or read response"
+// @Failure 502 {object} models.ErrorResponse "Failed to request GREEN-API"
+// @Router /api/state [get]
 func (h *Handler) GetStateInstance(c fiber.Ctx) error {
 	return h.doGreenAPIGet(c, "getStateInstance")
 }
 
 // SendMessage принимает запрос от клиента на отправку текстового сообщения,
 // преобразует его в JSON и проксирует в метод sendMessage GREEN-API.
+//
+// @Summary Send text message
+// @Description Sends a text message via GREEN-API. If chatId is sent as a plain phone number, the backend automatically appends @c.us.
+// @Tags green-api
+// @Accept json
+// @Produce json
+// @Param request body models.SendMessageRequest true "Message payload"
+// @Success 200 {object} map[string]interface{} "GREEN-API response"
+// @Failure 400 {object} models.ValidationErrorResponse "Validation failed or invalid request body"
+// @Failure 500 {object} models.ErrorResponse "Failed to build request or marshal payload"
+// @Failure 502 {object} models.ErrorResponse "Failed to request GREEN-API"
+// @Router /api/message [post]
 func (h *Handler) SendMessage(c fiber.Ctx) error {
 	var req models.SendMessageRequest
 
@@ -87,6 +123,18 @@ func (h *Handler) SendMessage(c fiber.Ctx) error {
 
 // SendFileByUrl принимает запрос от клиента на отправку файла по ссылке,
 // преобразует его в JSON и проксирует в метод sendFileByUrl GREEN-API.
+//
+// @Summary Send file by URL
+// @Description Sends a file by public URL via GREEN-API. If chatId is sent as a plain phone number, the backend automatically appends @c.us.
+// @Tags green-api
+// @Accept json
+// @Produce json
+// @Param request body models.SendFileByURLRequest true "File payload"
+// @Success 200 {object} map[string]interface{} "GREEN-API response"
+// @Failure 400 {object} models.ValidationErrorResponse "Validation failed or invalid request body"
+// @Failure 500 {object} models.ErrorResponse "Failed to build request or marshal payload"
+// @Failure 502 {object} models.ErrorResponse "Failed to request GREEN-API"
+// @Router /api/file [post]
 func (h *Handler) SendFileByUrl(c fiber.Ctx) error {
 	var req models.SendFileByURLRequest
 
