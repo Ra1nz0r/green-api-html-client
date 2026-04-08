@@ -55,39 +55,39 @@
 
 ## Что где лежит
 
-- **Главная HTML-страница**  
-  `web/index.html`
+- **Главная HTML-страница**
+  - `web/index.html`
+
+- **Стили и JS**
+  - `web/static/css/style.css`
+  - `web/static/js/app.js`
 
 - **Материалы для README**
-  `assets/`
+  - `assets/`
 
-- **Стили и JS**  
-  `web/static/css/style.css`  
-  `web/static/js/app.js`
+- **HTTP-обработчики**
+  - `internal/handlers/`
 
-- **HTTP-обработчики**  
-  `internal/handlers/`
+- **Конфигурация**
+  - `internal/config/`
 
-- **Конфигурация**  
-  `internal/config/`
+- **Валидация**
+  - `internal/validation/`
 
-- **Валидация**  
-  `internal/validation/`
+- **Модели запросов и ответов**
+  - `internal/models/`
 
-- **Модели запросов и ответов**  
-  `internal/models/`
+- **Swagger-документация**
+  - `docs/`
 
-- **Swagger-документация**  
-  `docs/`
+- **Точка входа**
+  - `cmd/app/main.go`
 
-- **Точка входа**  
-  `cmd/app/main.go`
+- **Taskfile**
+  - `Taskfile.yml`
 
-- **Taskfile**  
-  `Taskfile.yml`
-
-- **Dockerfile**  
-  `Dockerfile`
+- **Dockerfile**
+  - `Dockerfile`
 
 ---
 
