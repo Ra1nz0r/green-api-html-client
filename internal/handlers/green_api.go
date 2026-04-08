@@ -34,15 +34,15 @@ func New(httpClient *http.Client, baseURL string) *Handler {
 // GetSettings получает настройки инстанса из GREEN-API.
 //
 // @Summary Get instance settings
-// @Description Returns GREEN-API instance settings.
+// @Description Returns the raw GREEN-API settings object without additional transformation.
 // @Tags green-api
 // @Produce json
 // @Param idInstance query string true "GREEN-API instance ID"
 // @Param apiTokenInstance query string true "GREEN-API instance API token"
-// @Success 200 {object} map[string]interface{} "GREEN-API response"
-// @Failure 400 {object} models.ErrorResponse "Missing required query parameters"
-// @Failure 500 {object} models.ErrorResponse "Failed to build request or read response"
-// @Failure 502 {object} models.ErrorResponse "Failed to request GREEN-API"
+// @Success 200 {object} map[string]interface{} "Raw GREEN-API settings response"
+// @Failure 400 {object} models.BadRequestErrorResponse "Missing required query parameters"
+// @Failure 500 {object} models.InternalErrorResponse "Failed to build request or read GREEN-API response"
+// @Failure 502 {object} models.BadGatewayErrorResponse "Failed to request GREEN-API"
 // @Router /api/settings [get]
 func (h *Handler) GetSettings(c fiber.Ctx) error {
 	return h.doGreenAPIGet(c, "getSettings")
@@ -56,10 +56,10 @@ func (h *Handler) GetSettings(c fiber.Ctx) error {
 // @Produce json
 // @Param idInstance query string true "GREEN-API instance ID"
 // @Param apiTokenInstance query string true "GREEN-API instance API token"
-// @Success 200 {object} map[string]interface{} "GREEN-API response"
-// @Failure 400 {object} models.ErrorResponse "Missing required query parameters"
-// @Failure 500 {object} models.ErrorResponse "Failed to build request or read response"
-// @Failure 502 {object} models.ErrorResponse "Failed to request GREEN-API"
+// @Success 200 {object} models.GetStateInstanceResponse "Current instance state"
+// @Failure 400 {object} models.BadRequestErrorResponse "Missing required query parameters"
+// @Failure 500 {object} models.InternalErrorResponse "Failed to build request or read GREEN-API response"
+// @Failure 502 {object} models.BadGatewayErrorResponse "Failed to request GREEN-API"
 // @Router /api/state [get]
 func (h *Handler) GetStateInstance(c fiber.Ctx) error {
 	return h.doGreenAPIGet(c, "getStateInstance")
@@ -74,10 +74,10 @@ func (h *Handler) GetStateInstance(c fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param request body models.SendMessageRequest true "Message payload"
-// @Success 200 {object} map[string]interface{} "GREEN-API response"
+// @Success 200 {object} models.MessageIDResponse "GREEN-API message identifier"
 // @Failure 400 {object} models.ValidationErrorResponse "Validation failed or invalid request body"
-// @Failure 500 {object} models.ErrorResponse "Failed to build request or marshal payload"
-// @Failure 502 {object} models.ErrorResponse "Failed to request GREEN-API"
+// @Failure 500 {object} models.InternalErrorResponse "Failed to build request, marshal payload or read GREEN-API response"
+// @Failure 502 {object} models.BadGatewayErrorResponse "Failed to request GREEN-API"
 // @Router /api/message [post]
 func (h *Handler) SendMessage(c fiber.Ctx) error {
 	var req models.SendMessageRequest
@@ -130,10 +130,10 @@ func (h *Handler) SendMessage(c fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param request body models.SendFileByURLRequest true "File payload"
-// @Success 200 {object} map[string]interface{} "GREEN-API response"
+// @Success 200 {object} models.MessageIDResponse "GREEN-API message identifier"
 // @Failure 400 {object} models.ValidationErrorResponse "Validation failed or invalid request body"
-// @Failure 500 {object} models.ErrorResponse "Failed to build request or marshal payload"
-// @Failure 502 {object} models.ErrorResponse "Failed to request GREEN-API"
+// @Failure 500 {object} models.InternalErrorResponse "Failed to build request, marshal payload or read GREEN-API response"
+// @Failure 502 {object} models.BadGatewayErrorResponse "Failed to request GREEN-API"
 // @Router /api/file [post]
 func (h *Handler) SendFileByUrl(c fiber.Ctx) error {
 	var req models.SendFileByURLRequest

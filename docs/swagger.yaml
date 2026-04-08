@@ -1,9 +1,33 @@
 basePath: /
 definitions:
-  models.ErrorResponse:
+  models.BadGatewayErrorResponse:
+    properties:
+      error:
+        example: failed to request GREEN-API
+        type: string
+    type: object
+  models.BadRequestErrorResponse:
     properties:
       error:
         example: idInstance is required
+        type: string
+    type: object
+  models.GetStateInstanceResponse:
+    properties:
+      stateInstance:
+        example: authorized
+        type: string
+    type: object
+  models.InternalErrorResponse:
+    properties:
+      error:
+        example: failed to build request
+        type: string
+    type: object
+  models.MessageIDResponse:
+    properties:
+      idMessage:
+        example: 3EB00BA9F12E0A8028047E
         type: string
     type: object
   models.SendFileByURLRequest:
@@ -112,22 +136,22 @@ paths:
       - application/json
       responses:
         "200":
-          description: GREEN-API response
+          description: GREEN-API message identifier
           schema:
-            additionalProperties: true
-            type: object
+            $ref: '#/definitions/models.MessageIDResponse'
         "400":
           description: Validation failed or invalid request body
           schema:
             $ref: '#/definitions/models.ValidationErrorResponse'
         "500":
-          description: Failed to build request or marshal payload
+          description: Failed to build request, marshal payload or read GREEN-API
+            response
           schema:
-            $ref: '#/definitions/models.ErrorResponse'
+            $ref: '#/definitions/models.InternalErrorResponse'
         "502":
           description: Failed to request GREEN-API
           schema:
-            $ref: '#/definitions/models.ErrorResponse'
+            $ref: '#/definitions/models.BadGatewayErrorResponse'
       summary: Send file by URL
       tags:
       - green-api
@@ -148,28 +172,28 @@ paths:
       - application/json
       responses:
         "200":
-          description: GREEN-API response
+          description: GREEN-API message identifier
           schema:
-            additionalProperties: true
-            type: object
+            $ref: '#/definitions/models.MessageIDResponse'
         "400":
           description: Validation failed or invalid request body
           schema:
             $ref: '#/definitions/models.ValidationErrorResponse'
         "500":
-          description: Failed to build request or marshal payload
+          description: Failed to build request, marshal payload or read GREEN-API
+            response
           schema:
-            $ref: '#/definitions/models.ErrorResponse'
+            $ref: '#/definitions/models.InternalErrorResponse'
         "502":
           description: Failed to request GREEN-API
           schema:
-            $ref: '#/definitions/models.ErrorResponse'
+            $ref: '#/definitions/models.BadGatewayErrorResponse'
       summary: Send text message
       tags:
       - green-api
   /api/settings:
     get:
-      description: Returns GREEN-API instance settings.
+      description: Returns the raw GREEN-API settings object without additional transformation.
       parameters:
       - description: GREEN-API instance ID
         in: query
@@ -185,22 +209,22 @@ paths:
       - application/json
       responses:
         "200":
-          description: GREEN-API response
+          description: Raw GREEN-API settings response
           schema:
             additionalProperties: true
             type: object
         "400":
           description: Missing required query parameters
           schema:
-            $ref: '#/definitions/models.ErrorResponse'
+            $ref: '#/definitions/models.BadRequestErrorResponse'
         "500":
-          description: Failed to build request or read response
+          description: Failed to build request or read GREEN-API response
           schema:
-            $ref: '#/definitions/models.ErrorResponse'
+            $ref: '#/definitions/models.InternalErrorResponse'
         "502":
           description: Failed to request GREEN-API
           schema:
-            $ref: '#/definitions/models.ErrorResponse'
+            $ref: '#/definitions/models.BadGatewayErrorResponse'
       summary: Get instance settings
       tags:
       - green-api
@@ -222,22 +246,21 @@ paths:
       - application/json
       responses:
         "200":
-          description: GREEN-API response
+          description: Current instance state
           schema:
-            additionalProperties: true
-            type: object
+            $ref: '#/definitions/models.GetStateInstanceResponse'
         "400":
           description: Missing required query parameters
           schema:
-            $ref: '#/definitions/models.ErrorResponse'
+            $ref: '#/definitions/models.BadRequestErrorResponse'
         "500":
-          description: Failed to build request or read response
+          description: Failed to build request or read GREEN-API response
           schema:
-            $ref: '#/definitions/models.ErrorResponse'
+            $ref: '#/definitions/models.InternalErrorResponse'
         "502":
           description: Failed to request GREEN-API
           schema:
-            $ref: '#/definitions/models.ErrorResponse'
+            $ref: '#/definitions/models.BadGatewayErrorResponse'
       summary: Get instance state
       tags:
       - green-api

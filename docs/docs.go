@@ -45,10 +45,9 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "GREEN-API response",
+                        "description": "GREEN-API message identifier",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/models.MessageIDResponse"
                         }
                     },
                     "400": {
@@ -58,15 +57,15 @@ const docTemplate = `{
                         }
                     },
                     "500": {
-                        "description": "Failed to build request or marshal payload",
+                        "description": "Failed to build request, marshal payload or read GREEN-API response",
                         "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
+                            "$ref": "#/definitions/models.InternalErrorResponse"
                         }
                     },
                     "502": {
                         "description": "Failed to request GREEN-API",
                         "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
+                            "$ref": "#/definitions/models.BadGatewayErrorResponse"
                         }
                     }
                 }
@@ -98,10 +97,9 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "GREEN-API response",
+                        "description": "GREEN-API message identifier",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/models.MessageIDResponse"
                         }
                     },
                     "400": {
@@ -111,15 +109,15 @@ const docTemplate = `{
                         }
                     },
                     "500": {
-                        "description": "Failed to build request or marshal payload",
+                        "description": "Failed to build request, marshal payload or read GREEN-API response",
                         "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
+                            "$ref": "#/definitions/models.InternalErrorResponse"
                         }
                     },
                     "502": {
                         "description": "Failed to request GREEN-API",
                         "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
+                            "$ref": "#/definitions/models.BadGatewayErrorResponse"
                         }
                     }
                 }
@@ -127,7 +125,7 @@ const docTemplate = `{
         },
         "/api/settings": {
             "get": {
-                "description": "Returns GREEN-API instance settings.",
+                "description": "Returns the raw GREEN-API settings object without additional transformation.",
                 "produces": [
                     "application/json"
                 ],
@@ -153,7 +151,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "GREEN-API response",
+                        "description": "Raw GREEN-API settings response",
                         "schema": {
                             "type": "object",
                             "additionalProperties": true
@@ -162,19 +160,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Missing required query parameters",
                         "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
+                            "$ref": "#/definitions/models.BadRequestErrorResponse"
                         }
                     },
                     "500": {
-                        "description": "Failed to build request or read response",
+                        "description": "Failed to build request or read GREEN-API response",
                         "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
+                            "$ref": "#/definitions/models.InternalErrorResponse"
                         }
                     },
                     "502": {
                         "description": "Failed to request GREEN-API",
                         "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
+                            "$ref": "#/definitions/models.BadGatewayErrorResponse"
                         }
                     }
                 }
@@ -208,28 +206,27 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "GREEN-API response",
+                        "description": "Current instance state",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/models.GetStateInstanceResponse"
                         }
                     },
                     "400": {
                         "description": "Missing required query parameters",
                         "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
+                            "$ref": "#/definitions/models.BadRequestErrorResponse"
                         }
                     },
                     "500": {
-                        "description": "Failed to build request or read response",
+                        "description": "Failed to build request or read GREEN-API response",
                         "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
+                            "$ref": "#/definitions/models.InternalErrorResponse"
                         }
                     },
                     "502": {
                         "description": "Failed to request GREEN-API",
                         "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
+                            "$ref": "#/definitions/models.BadGatewayErrorResponse"
                         }
                     }
                 }
@@ -237,12 +234,48 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "models.ErrorResponse": {
+        "models.BadGatewayErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "failed to request GREEN-API"
+                }
+            }
+        },
+        "models.BadRequestErrorResponse": {
             "type": "object",
             "properties": {
                 "error": {
                     "type": "string",
                     "example": "idInstance is required"
+                }
+            }
+        },
+        "models.GetStateInstanceResponse": {
+            "type": "object",
+            "properties": {
+                "stateInstance": {
+                    "type": "string",
+                    "example": "authorized"
+                }
+            }
+        },
+        "models.InternalErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "failed to build request"
+                }
+            }
+        },
+        "models.MessageIDResponse": {
+            "type": "object",
+            "properties": {
+                "idMessage": {
+                    "type": "string",
+                    "example": "3EB00BA9F12E0A8028047E"
                 }
             }
         },
