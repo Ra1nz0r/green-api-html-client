@@ -1,0 +1,25 @@
+meta {
+  name: SendFileByUrl - отправляет файл
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{url}}:{{port}}/api/file
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "chatId": {{chatId}},
+    "urlFile": "https://avatars.mds.yandex.net/i?id=30196f54f606294d6559c44368a27f63_l-5256374-images-thumbs&n=13",
+    "fileName": "avatar.jpg",
+    "caption": "Тестовый файл"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

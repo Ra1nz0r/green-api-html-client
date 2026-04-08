@@ -1,0 +1,14 @@
+[server]
+  host = "0.0.0.0"
+  port = 8080
+
+[log]
+  level = "trace"
+  dir = "log"
+  pretty = true
+  to_file = true
+  caller = true
+
+[green_api]
+  base_url = "https://1105.api.green-api.com"
+  request_timeout = "15s"

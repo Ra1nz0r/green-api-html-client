@@ -1,0 +1,393 @@
+/* ========================= */
+/* БАЗОВЫЕ НАСТРОЙКИ И ТЕМЫ  */
+/* ========================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root[data-theme="light"] {
+  --bg: #f4f6f8;
+  --bg-elevated: #ffffff;
+  --bg-soft: #f8fafc;
+  --text: #111827;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --border-strong: #cbd5e1;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --danger: #dc2626;
+  --success: #22c55e;
+  --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  --response-bg: #e3e6e9;
+  --response-text: #34363a;
+}
+
+:root[data-theme="dark"] {
+  --bg: #191b1f;
+  --bg-elevated: #262a31;
+  --bg-soft: #2f343d;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --border: #3a404a;
+  --border-strong: #4b5563;
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --danger: #ef4444;
+  --success: #22c55e;
+  --shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
+  --response-bg: #111318;
+  --response-text: #e5e7eb;
+}
+
+/* ========================= */
+/* БАЗОВАЯ РАЗМЕТКА          */
+/* ========================= */
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  line-height: 1.4;
+}
+
+.page {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.page__grid {
+  display: grid;
+  grid-template-columns: minmax(360px, 480px) minmax(420px, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 1000px) {
+  .page__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ========================= */
+/* ВЕРХНЯЯ ПАНЕЛЬ            */
+/* ========================= */
+
+.topbar {
+  background: transparent;
+}
+
+.topbar__inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 18px 20px 6px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 26px;
+}
+
+.page-subtitle {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.topbar__actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* ========================= */
+/* ПАНЕЛИ И КАРТОЧКИ         */
+/* ========================= */
+
+.panel {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+
+.panel--form {
+  padding: 20px;
+}
+
+.panel--response {
+  padding: 20px;
+  min-height: 780px;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel__header {
+  margin-bottom: 14px;
+}
+
+.panel__header--spaced {
+  margin-top: 22px;
+}
+
+.panel__header--response {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.panel__title {
+  margin: 0;
+  font-size: 18px;
+}
+
+.panel__hint {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.card {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.card + .card {
+  margin-top: 12px;
+}
+
+.card--actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 560px) {
+  .card--actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ========================= */
+/* ПОЛЯ ФОРМЫ                */
+/* ========================= */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.field:last-child {
+  margin-bottom: 0;
+}
+
+.field__label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.input,
+.textarea,
+.response-box {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-elevated);
+  color: var(--text);
+  padding: 12px 14px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  font-size: 14px;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.checkbox {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* ========================= */
+/* КНОПКИ                    */
+/* ========================= */
+
+.btn {
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  padding: 0 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: transform 0.06s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+.btn-ghost {
+  background: var(--bg-elevated);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.btn-ghost:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-soft);
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.btn-icon {
+  width: 44px;
+  padding: 0;
+}
+
+/* ========================= */
+/* ОБЛАСТЬ ОТВЕТА            */
+/* ========================= */
+
+.response-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.response-status {
+  min-height: 20px;
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.response-box {
+  flex: 1 1 auto;
+  min-height: 620px;
+  resize: none;
+  font-family: Consolas, Monaco, monospace;
+  line-height: 1.5;
+  background: var(--response-bg);
+  color: var(--response-text);
+  border-color: var(--border);
+}
+
+.response-box:focus {
+  box-shadow: none;
+}
+
+/* ========================= */
+/* СЛУЖЕБНЫЕ СОСТОЯНИЯ       */
+/* ========================= */
+
+.status-success {
+  color: var(--success);
+}
+
+.status-error {
+  color: var(--danger);
+}
+
+/* ========================= */
+/* СТИЛИ ДЛЯ АККОРДЕОНА      */
+/* ========================= */
+
+.muted-inline {
+  color: var(--muted);
+  font-weight: normal;
+}
+
+.accordion {
+  margin-top: 22px;
+}
+
+.accordion__toggle {
+  width: 100%;
+  height: 52px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg-soft);
+  color: var(--text);
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.accordion__toggle:hover {
+  border-color: var(--border-strong);
+}
+
+.accordion__icon {
+  color: var(--muted);
+  transition: transform 0.2s ease;
+}
+
+.accordion.open .accordion__icon {
+  transform: rotate(180deg);
+}
+
+.accordion__content {
+  display: none;
+  padding-top: 12px;
+}
+
+.accordion.open .accordion__content {
+  display: block;
+}
+
+.field__hint {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}

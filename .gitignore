@@ -1,0 +1,12 @@
+.DS_Store
+.vscode/
+.idea/
+
+log/
+*.log
+*.log.gz
+
+green-api-client_config.cfg
+green-api-client_config.env
+
+bruno/**/environments/

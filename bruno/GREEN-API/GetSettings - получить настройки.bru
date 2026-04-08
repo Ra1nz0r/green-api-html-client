@@ -1,0 +1,15 @@
+meta {
+  name: GetSettings - получить настройки
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{url}}:{{port}}/api/settings
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
