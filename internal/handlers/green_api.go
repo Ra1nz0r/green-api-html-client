@@ -91,7 +91,7 @@ func (h *Handler) SendMessage(c fiber.Ctx) error {
 	// Bind декодирует JSON и, при наличии StructValidator,
 	// автоматически запускает валидацию структуры.
 	if err := c.Bind().JSON(&req); err != nil {
-		return buildValidationErrorResponse(c, logger, err)
+		return h.buildValidationErrorResponse(c, logger, err)
 	}
 
 	// Формируем тело запроса, которое ожидает непосредственно GREEN-API.
@@ -147,7 +147,7 @@ func (h *Handler) SendFileByUrl(c fiber.Ctx) error {
 	// Bind декодирует JSON и, при наличии StructValidator,
 	// автоматически запускает валидацию структуры.
 	if err := c.Bind().JSON(&req); err != nil {
-		return buildValidationErrorResponse(c, logger, err)
+		return h.buildValidationErrorResponse(c, logger, err)
 	}
 
 	// Формируем тело запроса, которое ожидает непосредственно GREEN-API.
@@ -182,22 +182,8 @@ func (h *Handler) SendFileByUrl(c fiber.Ctx) error {
 // doGreenAPIGet выполняет GET-запрос к указанному методу GREEN-API
 // и возвращает клиенту ответ внешнего сервиса как есть.
 func (h *Handler) doGreenAPIGet(c fiber.Ctx, methodName string) error {
-	nFunc, done := logs.LogFunction(methodName)
+	nFunc, done := logs.LogFunction("doGreenAPIGet")
 	defer done()
-
-	idInstance := c.Query("idInstance", "")
-	if idInstance == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "idInstance is required",
-		})
-	}
-
-	apiTokenInstance := c.Query("apiTokenInstance", "")
-	if apiTokenInstance == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "apiTokenInstance is required",
-		})
-	}
 
 	logger := log.With().
 		Str("func", nFunc).
@@ -205,6 +191,27 @@ func (h *Handler) doGreenAPIGet(c fiber.Ctx, methodName string) error {
 		Str("path", c.Path()).
 		Str("green_api_method", methodName).
 		Str("green_api_base_url", h.baseURL).
+		Logger()
+
+	idInstance := c.Query("idInstance", "")
+	if idInstance == "" {
+		logger.Warn().Msg("missing required query parameter: idInstance")
+
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "idInstance is required",
+		})
+	}
+
+	apiTokenInstance := c.Query("apiTokenInstance", "")
+	if apiTokenInstance == "" {
+		logger.Warn().Msg("missing required query parameter: apiTokenInstance")
+
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "apiTokenInstance is required",
+		})
+	}
+
+	logger = logger.With().
 		Str("id_instance", idInstance).
 		Logger()
 
@@ -277,7 +284,7 @@ func (h *Handler) doGreenAPIPost(
 	apiTokenInstance string,
 	methodName string,
 ) error {
-	nFunc, done := logs.LogFunction(methodName)
+	nFunc, done := logs.LogFunction("doGreenAPIPost")
 	defer done()
 
 	logger := log.With().
@@ -364,7 +371,7 @@ func (h *Handler) doGreenAPIPost(
 // детализированный ответ по каждому невалидному полю и пишет warning в лог.
 // Во всех остальных случаях возвращается общий ответ о некорректном теле запроса
 // и ошибка пишется в лог.
-func buildValidationErrorResponse(c fiber.Ctx, logger zerolog.Logger, err error) error {
+func (h *Handler) buildValidationErrorResponse(c fiber.Ctx, logger zerolog.Logger, err error) error {
 	if validationErrors, ok := err.(validator.ValidationErrors); ok {
 		fieldErrors := make([]fiber.Map, 0, len(validationErrors))
 
